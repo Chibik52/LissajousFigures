@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Фигуры Лиссажу</title>
+</head>
+<body>
+<h1 align="center">Фигуры Лиссажу</h1>
+<p align="left"><canvas height="600" width="800" id="canvas"></canvas></p>
+<form name="forma">
+Соотношение частоты по x <input type="number" min="0" max="10" step="0.001" name="sx" value="1">
+Соотношение частоты по y <input type="number" min="0" max="10" step="0.001" name="sy" value="1.001">
+<input type="button" value="сброс" onclick="rst();">
+<input type="button" value="линия/круг" onclick="knopka();">
+</form>
+<script language="JavaScript">
+canvas=document.getElementById("canvas");
+ctx=canvas.getContext("2d");
+setInterval(()=>draw(),10);
+let xold=x0=x=250,yold=y0=y=150,k=0,angle1=0,angle2=0,btn1=false;
+sx=document.forma.sx.value/10,sy=document.forma.sy.value/10;
+function rst(){
+x=x0=xold;
+y=y0=yold;
+angle1=angle2=0;
+ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+function knopka(){
+if(!btn1)
+btn1=true;
+else if(btn1)
+btn1=false;
+}
+function draw(){
+if(!btn1)ctx.lineWidth=3;
+else ctx.lineWidth=1;
+if(k>=1){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+//angle1+=Math.PI/16;
+k=0;
+}
+for(i=0;i<=Math.PI*2;i+=Math.PI/64){
+ctx.strokeRect(0,0,canvas.width,canvas.height);
+
+if(x>=canvas.width){
+x=0;
+ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+else if(y>=canvas.height){
+y=0;
+ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+ctx.beginPath();
+ctx.moveTo(x0,y0);
+x+=15*Math.sin(angle1);
+y+=15*Math.sin(angle2);
+angle1+=document.forma.sx.value/10;
+angle2+=sy=document.forma.sy.value/10;
+ctx.lineTo(x,y);
+x0=x;y0=y;
+if(btn1)ctx.arc(x,y,15,0,Math.PI*2);
+ctx.closePath();
+ctx.stroke();
+k++;
+}
+//angle1+=Math.PI/1024;
+}
+draw();
+</script>
+</body>
+</html>
